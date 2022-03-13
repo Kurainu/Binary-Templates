@@ -1,0 +1,33 @@
+//------------------------------------------------
+//--- 010 Editor v12.0.1 Binary Template
+//
+//      File: Hades PKG Files
+//   Authors: Kurainu
+//   Version: 
+//   Purpose: Compressed Hades pkg files Structure
+//  Category: 
+// File Mask: *.pkg
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+enum <byte> Compression{
+    LZ4 = 0x20,
+};
+
+typedef struct {
+    Compression CompAlg;
+    byte Zero[2];
+    byte PKVer;
+} PKGHeader;
+
+typedef struct {
+    byte CompFlag;
+    BigEndian();
+    int CompSize;
+    LittleEndian();
+    byte Compdata[CompSize];
+} PKGFile;
+
+PKGHeader Header;
+PKGFile File;

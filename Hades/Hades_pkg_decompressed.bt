@@ -1,0 +1,64 @@
+//------------------------------------------------
+//--- 010 Editor v12.0.1 Binary Template
+//
+//      File: Hades PKG Files
+//   Authors: Kurainu
+//   Version: 
+//   Purpose: Decompressed Hades pkg files Structure
+//  Category: 
+// File Mask: *.pkg
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+LittleEndian();
+
+typedef struct
+{    
+    ubyte stringLength;
+    local int stringLengthLocal = stringLength;
+    if(stringLength > 127)
+    {
+        stringLengthLocal = (ubyte)stringLength & (ubyte)127;
+        ubyte stringLength2;
+        stringLengthLocal += stringLength2 * 128;
+    }
+
+    char Name[stringLengthLocal];
+} String;
+
+string function_readPrefixedLengthString (String &b){
+    return b.Name;
+}
+
+typedef struct{
+    ubyte EntryType <format=hex>;
+    String Name <read=function_readPrefixedLengthString>;
+    ubyte unk1[4];
+    char Xnbmagic[4]; Assert( Xnbmagic == "XNBw","Not Matching XNBw Magic" );
+    ubyte XnbVer; Assert( XnbVer == 5 || XnbVer == 6 ,"Unknown XNB Version" );
+    ubyte flag;
+    ubyte unk2[4];
+    uint ImageFormat;
+    uint Width;
+    uint Height;
+    uint MipLevel;
+    uint ImageLength;
+    ubyte ImageData[ImageLength];
+} Texture;
+
+
+Printf("Current FTell: %d\n", FTell());
+local ubyte EntryType;
+
+while(EntryType != 0xFF){
+    EntryType = ReadByte(FTell());
+    if (EntryType == 0xAD){
+        Printf("Current EntryType: 0xAD\n");
+        Texture tex;
+    }
+    if (EntryType == 0xAA){
+        Printf("Current EntryType: 0xAA\n");
+        Texture tex;
+    }
+}
