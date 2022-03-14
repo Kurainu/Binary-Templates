@@ -7,12 +7,12 @@
 //   Purpose: Compressed Hades pkg files Structure
 //  Category: 
 // File Mask: *.pkg
-//  ID Bytes: 
+//  ID Bytes: 20 00 00 07 01 00
 //   History: 
 //------------------------------------------------
 
 enum <byte> Compression{
-    LZ4 = 0x20,
+    HeadlessLZ4 = 0x20,
 };
 
 typedef struct {
