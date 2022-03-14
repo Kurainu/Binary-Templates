@@ -31,6 +31,12 @@ string function_readPrefixedLengthString (String &b){
     return b.Name;
 }
 
+enum <int> ImageFormat {
+    None = 0,
+    BC3 = 6,
+    BC7 = 28,
+};
+
 typedef struct{
     ubyte EntryType <format=hex>;
     String Name <read=function_readPrefixedLengthString>;
@@ -39,7 +45,7 @@ typedef struct{
     ubyte XnbVer; Assert( XnbVer == 5 || XnbVer == 6 ,"Unknown XNB Version" );
     ubyte flag;
     ubyte unk2[4];
-    uint ImageFormat;
+    ImageFormat Format <comment="Shows the Compression Format of the Image">;
     uint Width;
     uint Height;
     uint MipLevel;
@@ -48,17 +54,13 @@ typedef struct{
 } Texture;
 
 
-Printf("Current FTell: %d\n", FTell());
-local ubyte EntryType;
+local ubyte EntryType = ReadByte(FTell());
 
-while(EntryType != 0xFF){
+if (EntryType != 0xAD && EntryType != 0xAA) {
+    Assert( false ,"Unknown EntryType" );
+}
+
+while(EntryType != 0xFF && EntryType != 0xBE){
+    Texture tex;
     EntryType = ReadByte(FTell());
-    if (EntryType == 0xAD){
-        Printf("Current EntryType: 0xAD\n");
-        Texture tex;
-    }
-    if (EntryType == 0xAA){
-        Printf("Current EntryType: 0xAA\n");
-        Texture tex;
-    }
 }
